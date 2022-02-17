@@ -1,0 +1,68 @@
+
+<head>
+<style>
+<!-- Css, making the text centred, could also change the font and or size /color here  -->
+h1 {text-align: center;}
+p {text-align: center;}
+div {text-align: center;}
+
+<!--Justify Object or Text-->
+
+div.justified {
+    display: flex;
+    justify-content: center;
+}
+
+
+</style>
+</head>
+<body>
+<!-- Just plain heading, paragraph and unamed div -->
+<h1>Bald-Streamer-Trolling-Toolkit</h1>
+<p>Liisn how Brian will say a Message </p>
+<div>"Activate Baldness" Submits whatever is in the textbox. If you change the message click it again to update</div>
+<div>‍‍</div>
+
+<!-- Create a Text Area Centred-->
+<div class="justified">
+    <textarea id="text" rows=15 cols=80 maxlength=500>
+</textarea>
+</div>
+
+<!-- Create audio object -->
+<div>
+    <audio id="audio" controls="">
+        <source id="source" type="audio/wav"> <!-- Variable for the audio is source, type of audio ... -->
+    </audio>
+<div>
+<div>
+    <button type="submit" id="button">Activate Baldness</button> <!-- Creates the submit button -->
+</div>
+<span id="lenChar">0</span> <!-- Counter Variable Set to 0 -->
+
+<script>
+
+document.getElementById("text").oninput = function() {
+    document.getElementById("lenChar").innerHTML = document.getElementById("text").value.length; <!-- get length of text -->
+};
+
+document.getElementById("button").onclick = async function() {
+    let text = document.getElementById("text").value; <!-- gets all the text -->
+    let talk = await fetch("https://api.streamelements.com/kappa/v2/speech?voice=Brian&text=" + encodeURIComponent(text.trim())); <!-- Fetching Brian and submitting text as its message  -->
+
+    <!-- Manages the audio widget and playback -->
+    if (talk.status != 200) {
+        alert(await talk.text());
+        return;
+    }
+
+    let Baldening = await talk.blob();
+
+    let SoundofBald = URL.createObjectURL(Baldening);
+    document.getElementById("source").setAttribute("src", SoundofBald);
+    let Sound = document.getElementById("audio");
+    Sound.pause();
+    Sound.load();
+    Sound.play();
+};
+</script>
